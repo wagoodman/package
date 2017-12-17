@@ -169,8 +169,5 @@ pub fn containerize<F>(f: F, runtime: Runtime, package: Package) where F: Fn() {
         let builder = build_from_runtime(package.builder.clone());
         builder.placeholder();
         write_dockerfile("foo");
-        println!("Hello Metaparticle! package: {:?}", package);
-        println!("Hello Metaparticle! runtime: {:?}", runtime);
-        f()
     }
 }
