@@ -1,3 +1,10 @@
+use std::env;
+use std::fs::File;
+use std::ffi::OsStr;
+use std::io;
+use std::io::prelude::*;
+
+
 #[derive(Debug)]
 pub struct Runtime {
     pub replicas: Option<u64>,
@@ -43,6 +50,24 @@ impl Default for Package {
             publish: Some(false)
         }
     }
+}
+
+fn in_docker_container() -> bool {
+    let env_var_key = OsStr::new("METAPARTICLE_IN_CONTAINER");
+    let env_var = env::var(env_var_key);
+    if let Ok(value) = env_var {
+        return value == "true";
+    }
+
+    let mut buffer  = String::with_capacity(256); // kind of a guess on initial capacity
+    let mut file_result =  File::open("/proc/1/cgroup");
+
+    if let Ok(mut file) = File::open("/proc/1/cgroup") {
+        if let Ok(_) = file.read_to_string(&mut buffer) {
+            return buffer.contains("docker");
+        }
+    }
+    false
 }
 
 pub fn containerize<F>(f: F, runtime: Runtime, package: Package) where F: Fn() {
