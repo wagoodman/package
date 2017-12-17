@@ -1,3 +1,5 @@
+mod builder;
+
 #[derive(Debug)]
 pub struct Runtime {
     pub replicas: Option<u64>,
@@ -46,7 +48,5 @@ impl Default for Package {
 }
 
 pub fn containerize<F>(f: F, runtime: Runtime, package: Package) where F: Fn() {
-    println!("Hello Metaparticle! package: {:?}", package);
-    println!("Hello Metaparticle! runtime: {:?}", runtime);
-    f()
+
 }
