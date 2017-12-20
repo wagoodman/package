@@ -58,6 +58,7 @@ impl Default for Package {
 
 pub trait Executor {
     fn placeholder(&self);
+
 }
 
 
@@ -80,6 +81,10 @@ impl Executor for FakeExecutor {
 
 pub trait Builder {
     fn placeholder(&self);
+    fn build(&self, dir: String, image: String);
+    fn push(&self, image: String);
+    fn logs(&self, name: String);
+    fn cancel(&self, name: String);
 }
 
 struct DockerBuilder{}
@@ -88,6 +93,10 @@ impl Builder for DockerBuilder {
     fn placeholder(&self) {
         println!("Docker builder!");
     }
+    fn build(&self, dir: String, image: String) {}
+    fn push(&self, image: String) {}
+    fn logs(&self, name: String) {}
+    fn cancel(&self, name: String) {}
 }
 
 struct FakeBuilder{}
@@ -96,6 +105,10 @@ impl Builder for FakeBuilder {
     fn placeholder(&self) {
         println!("Fake builder!");
     }
+    fn build(&self, dir: String, image: String) {}
+    fn push(&self, image: String) {}
+    fn logs(&self, name: String) {}
+    fn cancel(&self, name: String) {}
 }
 
 fn in_docker_container() -> bool {
