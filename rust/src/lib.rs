@@ -1,7 +1,9 @@
 
 mod builder;
+mod executor;
 
 use builder::Builder;
+use executor::Executor;
 
 use std::env;
 use std::error::Error;
@@ -58,12 +60,6 @@ impl Default for Package {
     }
 }
 
-pub trait Executor {
-    fn placeholder(&self);
-
-}
-
-
 
 struct DockerExecutor{}
 
@@ -73,12 +69,14 @@ impl Executor for DockerExecutor {
     fn placeholder(&self) {
         println!("Docker executor");
     }
+    fn run(&self, image: String, name: String, config: Runtime) {}
 }
 
 impl Executor for FakeExecutor {
     fn placeholder(&self) {
         println!("Fake executor");
     }
+    fn run(&self, image: String, name: String, config: Runtime) {}
 }
 
 struct FakeBuilder{}
