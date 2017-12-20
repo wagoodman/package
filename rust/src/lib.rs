@@ -81,20 +81,6 @@ impl Executor for FakeExecutor {
     }
 }
 
-
-
-struct DockerBuilder{}
-
-impl Builder for DockerBuilder {
-    fn placeholder(&self) {
-        println!("Docker builder!");
-    }
-    fn build(&self, dir: String, image: String) {}
-    fn push(&self, image: String) {}
-    fn logs(&self, name: String) {}
-    fn cancel(&self, name: String) {}
-}
-
 struct FakeBuilder{}
 
 impl Builder for FakeBuilder {
@@ -140,13 +126,13 @@ fn executor_from_runtime(executor_name: Option<String>) -> Box<Executor> {
 fn build_from_runtime(builder_name: Option<String>) -> Box<Builder> {
     if let Some(name) = builder_name {
         let builder : Box<Builder> = match name.as_ref() { 
-            "docker" => Box::new(DockerBuilder{}),
+            "docker" => Box::new(builder::docker::DockerBuilder{}),
             "fake" => Box::new(FakeBuilder{}),
             _ => panic!("Unsupported builder type {}", name),
         };
         builder
     } else {
-        Box::new(DockerBuilder{})
+        Box::new(builder::docker::DockerBuilder{})
     }
 }
 

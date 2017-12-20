@@ -1,4 +1,17 @@
 use std::process;
+use Builder;
+
+pub struct DockerBuilder{}
+
+impl Builder for DockerBuilder {
+    fn placeholder(&self) {
+        println!("Docker builder!");
+    }
+    fn build(&self, dir: String, image: String) {}
+    fn push(&self, image: String) {}
+    fn logs(&self, name: String) {}
+    fn cancel(&self, name: String) {}
+}
 
 pub fn build(dir: String, image: String) {
     let mut child = process::Command::new("docker")
