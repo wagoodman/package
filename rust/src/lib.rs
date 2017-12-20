@@ -1,6 +1,8 @@
 
 mod builder;
 
+use builder::Builder;
+
 use std::env;
 use std::error::Error;
 use std::fs::File;
@@ -79,13 +81,7 @@ impl Executor for FakeExecutor {
     }
 }
 
-pub trait Builder {
-    fn placeholder(&self);
-    fn build(&self, dir: String, image: String);
-    fn push(&self, image: String);
-    fn logs(&self, name: String);
-    fn cancel(&self, name: String);
-}
+
 
 struct DockerBuilder{}
 
