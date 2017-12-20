@@ -61,16 +61,8 @@ impl Default for Package {
 }
 
 
-struct DockerExecutor{}
-
 struct FakeExecutor{}
 
-impl Executor for DockerExecutor {
-    fn placeholder(&self) {
-        println!("Docker executor");
-    }
-    fn run(&self, image: String, name: String, config: Runtime) {}
-}
 
 impl Executor for FakeExecutor {
     fn placeholder(&self) {
@@ -112,13 +104,13 @@ fn in_docker_container() -> bool {
 fn executor_from_runtime(executor_name: Option<String>) -> Box<Executor> {
     if let Some(name) = executor_name {
         let executor : Box<Executor> = match name.as_ref() {
-            "docker" => Box::new(DockerExecutor{}),
+            "docker" => Box::new(executor::docker::DockerExecutor{}),
             "fake" => Box::new(FakeExecutor{}),
             _ => panic!("Unsupported executor type {}", name),
         };
         return executor;
     }
-    Box::new(DockerExecutor{})
+    Box::new(executor::docker::DockerExecutor{})
 }
 
 fn build_from_runtime(builder_name: Option<String>) -> Box<Builder> {
